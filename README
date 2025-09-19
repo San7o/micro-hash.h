@@ -1,0 +1,88 @@
+micro-hash.h
+------------
+
+Quick and dirty hash functions in C99, with some benchmarks. Lots of
+hash functions for int32, int64 and bytes keys!
+
+THESE FUNCTIONS ARE NOT CRYPTOGRAPHICALLY SECURE. IF YOU NEED A
+CRYPTOGRAPHICALLY SECURE HASH FUNCTION THEN GO USE A KNOWN
+IMPLEMENTATION OF AN APPROVED HASH FUNCTION FROM NIST
+
+Author:  Giovanni Santini
+Mail:    giovanni.santini@proton.me
+License: MIT
+
+
+Documentation
+-------------
+
+This header-only library is a collection of fast hash functions
+gathered from all around the interweb. If you are looking for a
+quick hash function for your needs, be my guest.
+
+Here you will find:
+  - micro_hash_int32_wang
+  - micro_hash_int32_wang2
+  - micro_hash_int32_rob
+  - micro_hash_int64_wang
+  - micro_hash_int6432_wang
+  - micro_hash_bytes_curl
+  - micro_hash_bytes_jenkins
+  - micro_hash_str_stb
+  - micro_hash_str_djb2
+  - micro_hash_str_sdbm
+
+Check out the signatures to see the type that they accept and
+generate.
+
+
+Benchmarks
+----------
+
+There are some benchmarks under the `tests/` directory, for now
+only the functions that work with integers are tested.
+
+If you run `make check`, you should get similar results:
+
+/----------------------------------------------------------\
+|      hash function      |  collisions  |  non-uniformity |
+| ----------------------- | ------------ | --------------- |
+| micro_hash_int32_rob    | 0            | 39.740234375000 |
+| micro_hash_int32_wang2  | 0            | 39.412597656250 |
+| micro_hash_int6432_wang | 11580        | 39.166503906250 |
+| micro_hash_int64_wang   | 0            | 38.696289062500 |
+| micro_hash_int32_wang   | 0            | 39.614257812500 |
+\----------------------------------------------------------/
+
+`collisions` is the number of collisions found by generating
+ITERATIONS number of random values. `non-uniformity` is a measure
+of how much the hash values are not distributed uniformly, more
+specifically it is the mean of the difference between the the expected
+distribution (uniform) and the actual distribution of the hashes,
+with the hashes being mapped over a smaller space (2^PRECISION)
+compared to total hash space (for practical reasons). Lower is
+better.
+
+
+Usage
+-----
+
+Do this:
+
+  #define MICRO_HASH_IMPLEMENTATION
+
+before you include the header in *one* C or C++ file to create the
+implementation.
+
+i.e. it should look like this:
+
+  #include ...
+  #include ...
+  #include ...
+  #define MICRO_HASH_IMPLEMENTATION
+  #include "micro-hash.h"
+
+Then use whatever hash function you fancy most.
+
+Some more hash functions:
+- https://en.wikipedia.org/wiki/List_of_hash_functions
