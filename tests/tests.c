@@ -51,7 +51,6 @@ uint64_t lcg64(uint64_t seed)
   return MAGIC1_64 * seed + MAGIC2_64;
 }
 
-
 // Get the absolute value of a double
 inline double absd(double x)
 {
