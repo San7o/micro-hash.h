@@ -90,6 +90,20 @@
 // Some more hash functions:
 // - https://en.wikipedia.org/wiki/List_of_hash_functions
 //
+//
+// Code
+// ----
+//
+// The official git repository of micro-hash.h is hosted at:
+//
+//     https://github.com/San7o/micro-hash.h
+//
+// This is part of a bigger collection of header-only C99 libraries
+// called "micro-headers", contributions are welcome:
+//
+//     https://github.com/San7o/micro-headers
+//
+
 
 #ifndef _MICRO_HASH_H_
 #define _MICRO_HASH_H_
