@@ -1,5 +1,5 @@
 micro-hash.h
-------------
+============
 
 Quick and dirty hash functions in C99, with some benchmarks. Lots of
 hash functions for int32, int64 and bytes keys!

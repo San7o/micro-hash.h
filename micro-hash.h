@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // micro-hash.h
-// ------------
+// ============
 //
 // Quick and dirty hash functions in C99, with some benchmarks. Lots
 // of functions for int32, int64 and bytes keys!
@@ -105,8 +105,8 @@
 //
 
 
-#ifndef _MICRO_HASH_H_
-#define _MICRO_HASH_H_
+#ifndef MICRO_HASH
+#define MICRO_HASH
 
 #define MICRO_HASH_MAJOR 0
 #define MICRO_HASH_MINOR 1
@@ -116,8 +116,20 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif // __cplusplus
+#endif
 
+//
+// Configuration
+//
+
+// Config: Prefix for all functions
+// For function inlining, set this to `static inline` and then define
+// the implementation in all the files
+#ifndef MICRO_HASH_DEF
+  #define MICRO_HASH_DEF extern
+#endif
+  
+  
 //
 // Function declarations
 //
@@ -131,19 +143,19 @@ extern "C" {
 // This function uses a combination of bit shifts and integer
 // multiplication to hash the input key.
 // Credits: Thomas Wang
-uint32_t micro_hash_int32_wang(uint32_t key);
+MICRO_HASH_DEF uint32_t micro_hash_int32_wang(uint32_t key);
 
 // Credits: Thomas Wang
-uint32_t micro_hash_int32_wang2(uint32_t key);
+MICRO_HASH_DEF uint32_t micro_hash_int32_wang2(uint32_t key);
 
 // Credits: Robert Jenkins
-uint32_t micro_hash_int32_rob(uint32_t key);
+MICRO_HASH_DEF uint32_t micro_hash_int32_rob(uint32_t key);
 
 // Credits: Thomas Wang
-uint64_t micro_hash_int64_wang(uint64_t key);
+MICRO_HASH_DEF uint64_t micro_hash_int64_wang(uint64_t key);
 
 // Credits: Thomas Wang
-uint32_t micro_hash_int6432_wang(uint64_t key);
+MICRO_HASH_DEF uint32_t micro_hash_int6432_wang(uint64_t key);
 
 // Bytes
 // -----
@@ -151,10 +163,10 @@ uint32_t micro_hash_int6432_wang(uint64_t key);
 // Hash a sequence of bytes
 
 // curl/lib/hash.c
-size_t micro_hash_bytes_curl(void *key, size_t key_length);
+MICRO_HASH_DEF size_t micro_hash_bytes_curl(void *key, size_t key_length);
 
 // https://en.wikipedia.org/wiki/Jenkins_hash_function 
-uint32_t micro_hash_bytes_jenkins(uint8_t* key, size_t key_length);
+MICRO_HASH_DEF uint32_t micro_hash_bytes_jenkins(uint8_t* key, size_t key_length);
 
 // String
 // ------
@@ -162,7 +174,7 @@ uint32_t micro_hash_bytes_jenkins(uint8_t* key, size_t key_length);
 // Hash a string
 
 // stb/stb_ds.h
-size_t micro_hash_str_stb(char *str, size_t seed);
+MICRO_HASH_DEF size_t micro_hash_str_stb(char *str, size_t seed);
 
 // djb2 algorithm
 //
@@ -171,7 +183,7 @@ size_t micro_hash_str_stb(char *str, size_t seed);
 // favored by bernstein) uses xor: hash(i) = hash(i - 1) * 33 ^
 // str[i]; the magic of number 33 (why it works better than many other
 // constants, prime or not) has never been adequately explained.
-unsigned long micro_hash_str_djb2(unsigned char *str);
+MICRO_HASH_DEF unsigned long micro_hash_str_djb2(unsigned char *str);
 
 // sdbm
 //
@@ -182,7 +194,7 @@ unsigned long micro_hash_str_djb2(unsigned char *str);
 // with good distribution. the actual function is hash(i) = hash(i -
 // 1) * 65599 + str[i]; what is included below is the faster version
 // used in gawk.
-unsigned long micro_hash_str_sdbm(unsigned char *str);
+MICRO_HASH_DEF unsigned long micro_hash_str_sdbm(unsigned char *str);
 
 //
 // Implementation
@@ -192,7 +204,7 @@ unsigned long micro_hash_str_sdbm(unsigned char *str);
 
 // Integer
 
-uint32_t micro_hash_int32_wang(uint32_t a)
+MICRO_HASH_DEF uint32_t micro_hash_int32_wang(uint32_t a)
 {
     a = (a ^ 61) ^ (a >> 16);
     a = a + (a << 3);
@@ -202,7 +214,7 @@ uint32_t micro_hash_int32_wang(uint32_t a)
     return a;
 }
 
-uint32_t micro_hash_int32_wang2(uint32_t key)
+MICRO_HASH_DEF uint32_t micro_hash_int32_wang2(uint32_t key)
 {
   key = ~key + (key << 15); // key = (key << 15) - key - 1;
   key = key ^ (key >> 12);
@@ -213,7 +225,7 @@ uint32_t micro_hash_int32_wang2(uint32_t key)
   return key;
 }
 
-uint32_t micro_hash_int32_rob(uint32_t a)
+MICRO_HASH_DEF uint32_t micro_hash_int32_rob(uint32_t a)
 {
    a = (a+0x7ed55d16) + (a<<12);
    a = (a^0xc761c23c) ^ (a>>19);
@@ -224,7 +236,7 @@ uint32_t micro_hash_int32_rob(uint32_t a)
    return a;
 }
 
-uint64_t micro_hash_int64_wang(uint64_t key)
+MICRO_HASH_DEF uint64_t micro_hash_int64_wang(uint64_t key)
 {
   key = (~key) + (key << 21); // key = (key << 21) - key - 1;
   key = key ^ (key >> 24);
@@ -236,7 +248,7 @@ uint64_t micro_hash_int64_wang(uint64_t key)
   return key;
 }
 
-uint32_t micro_hash_int6432_wang(uint64_t key)
+MICRO_HASH_DEF uint32_t micro_hash_int6432_wang(uint64_t key)
 {
   key = (~key) + (key << 18); // key = (key << 18) - key - 1;
   key = key ^ (key >> 31);
@@ -249,7 +261,7 @@ uint32_t micro_hash_int6432_wang(uint64_t key)
 
 // Bytes
 
-size_t micro_hash_bytes_curl(void *key, size_t key_length)
+MICRO_HASH_DEF size_t micro_hash_bytes_curl(void *key, size_t key_length)
 {
   char *key_str = (char *) key;
   char *end = key_str + key_length;
@@ -264,7 +276,7 @@ size_t micro_hash_bytes_curl(void *key, size_t key_length)
   return h;
 }
 
-uint32_t micro_hash_bytes_jenkins(uint8_t* key, size_t length)
+MICRO_HASH_DEF uint32_t micro_hash_bytes_jenkins(uint8_t* key, size_t length)
 {
   size_t i = 0;
   uint32_t hash = 0;
@@ -281,7 +293,7 @@ uint32_t micro_hash_bytes_jenkins(uint8_t* key, size_t length)
 
 // Strings
   
-size_t micro_hash_str_stb(char *str, size_t seed)
+MICRO_HASH_DEF size_t micro_hash_str_stb(char *str, size_t seed)
 {
 #define SIZE_T_BITS           ((sizeof (size_t)) * 8)
 #define ROTATE_LEFT(val, n)   (((val) << (n)) | ((val) >> (SIZE_T_BITS - (n))))
@@ -306,7 +318,7 @@ size_t micro_hash_str_stb(char *str, size_t seed)
 #undef SIZE_T_BITS
 }
 
-unsigned long micro_hash_str_djb2(unsigned char *str)
+MICRO_HASH_DEF unsigned long micro_hash_str_djb2(unsigned char *str)
 {
   unsigned long hash = 5381;
   int c;
@@ -317,7 +329,7 @@ unsigned long micro_hash_str_djb2(unsigned char *str)
   return hash;
 }
 
-unsigned long micro_hash_str_sdbm(unsigned char *str)
+MICRO_HASH_DEF unsigned long micro_hash_str_sdbm(unsigned char *str)
 {
   unsigned long hash = 0;
   int c;
@@ -358,4 +370,4 @@ int main(void)
 }
 #endif // __cplusplus
 
-#endif // _MICRO_HASH_H_
+#endif // MICRO_HASH
