@@ -6,7 +6,7 @@
 #
 # Compile flags
 #
-CFLAGS=-Wall -Werror -Wpedantic -O2 -Wno-unused-function -std=c99
+CFLAGS=-Wall -Werror -Wpedantic -Wextra -O2 -Wno-unused-function -std=c99
 LDFLAGS=
 CC=gcc
 
