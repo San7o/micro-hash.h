@@ -96,7 +96,7 @@ HASHSET_DECLARE(uint32_t, u32, micro_hash_int32_wang, eq_u32)
 
 TEST(hash_tests, micro_hash_int32_wang)
 {
-  unsigned int *count = calloc(sizeof(unsigned int), (1 << PRECISION));
+  unsigned int *count = calloc((1 << PRECISION), sizeof(unsigned int));
 
   u32_set s;
   u32_set_init(&s);
@@ -117,7 +117,7 @@ TEST(hash_tests, micro_hash_int32_wang)
 
 TEST(hash_tests, micro_hash_int32_wang2)
 {
-  unsigned int *count = calloc(sizeof(unsigned int), (1 << PRECISION));
+  unsigned int *count = calloc((1 << PRECISION), sizeof(unsigned int));
 
   u32_set s;
   u32_set_init(&s);
@@ -138,7 +138,7 @@ TEST(hash_tests, micro_hash_int32_wang2)
 
 TEST(hash_tests, micro_hash_int32_rob)
 {
-  unsigned int *count = calloc(sizeof(unsigned int), (1 << PRECISION));
+  unsigned int *count = calloc((1 << PRECISION), sizeof(unsigned int));
 
   u32_set s;
   u32_set_init(&s);
@@ -162,7 +162,7 @@ HASHSET_DECLARE(uint64_t, u64, micro_hash_int64_wang, eq_u64)
   
 TEST(hash_tests, micro_hash_int64_wang)
 {
-  unsigned int *count = calloc(sizeof(unsigned int), (1 << PRECISION));
+  unsigned int *count = calloc((1 << PRECISION), sizeof(unsigned int));
 
   u64_set s;
   u64_set_init(&s);
@@ -183,7 +183,7 @@ TEST(hash_tests, micro_hash_int64_wang)
 
 TEST(hash_tests, micro_hash_int6432_wang)
 {
-  unsigned int *count = calloc(sizeof(unsigned int), (1 << PRECISION));
+  unsigned int *count = calloc((1 << PRECISION), sizeof(unsigned int));
 
   u32_set s;
   u32_set_init(&s);
