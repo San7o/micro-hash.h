@@ -28,6 +28,7 @@ Here you will find:
   - micro_hash_int6432_wang
   - micro_hash_bytes_curl
   - micro_hash_bytes_jenkins
+  - micro_hash_bytes_murmur
   - micro_hash_str_stb
   - micro_hash_str_djb2
   - micro_hash_str_sdbm
